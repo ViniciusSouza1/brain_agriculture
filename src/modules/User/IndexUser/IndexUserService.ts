@@ -7,7 +7,8 @@ export interface IIndexUserRequest {
     page: number
     username?: string;
     email?: string;
-    phone?: string;
+    name?: string;
+    last_name?: string;
 }
 
 class IndexUserService {

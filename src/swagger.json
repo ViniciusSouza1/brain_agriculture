@@ -1,0 +1,1052 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API - Brain agriculture",
+        "description": "API para teste para NTT data",
+        "termsOfService": "",
+        "contact": {
+            "email": "vinicius.souza.dev@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3333/",
+            "description": "API de desenvolvimento"
+        },
+        {
+            "url": "https://brainagriculture.herokuapp.com/",
+            "description": "API de produção"
+        }
+    ],
+    "paths": {
+        "/user": {
+            "post": {
+                "sumary": "Cadastro de usuário",
+                "description": "Essa rota é responsável por cadastro de usuário",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "username": "admin",
+                                        "password": "admin",
+                                        "name": "administrador",
+                                        "last_name": "brain_culture",
+                                        "email": "admin@brainculture.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Nome de usuário já existente / Usuário não pode possuir espaços em branco / A senha deve possuir mais de 6 caracteres"
+                    },
+                    "201": {
+                        "description": "Id do usuário"
+                    }
+                }
+            },
+            "get": {
+                "sumary": "Visualizar usuários",
+                "description": "Essa rota é responsável por retornar os usuários",
+                "tags": [
+                    "User"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "quantidade de usuários retornados",
+                        "required": true
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "Usuário como parâmetro para busca de usuário específico",
+                        "required": false
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome como parâmetro para busca de usuário específico",
+                        "required": false
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "query",
+                        "description": "Sobre-nome como parâmetro para busca de usuário específico",
+                        "required": false
+                    },
+                    {
+                        "name": "E-mail",
+                        "in": "query",
+                        "description": "E-mail como parâmetro para busca de usuário específico",
+                        "required": false
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "sumary": "Login",
+                "description": "Essa rota é responsável por efetuar login de usuário ou produtor",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "username": "admin",
+                                        "password": "admin"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Nome de usuário ou senha incorretas"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserLogged"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/farm_producer": {
+            "post": {
+                "sumary": "Cadastro de produtor rural",
+                "description": "Essa rota é responsável por cadastro de produtor rural, somente usuários podem cadastrar produtores rurais",
+                "tags": [
+                    "Produtores rurais"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Farm_producer"
+                            },
+                            "examples": {
+                                "Farm_producer": {
+                                    "value": {
+                                        "cpf_cnpj": "*********-**",
+                                        "name": "Teste",
+                                        "password": "123456",
+                                        "last_name": "Sw",
+                                        "city": "ITABIRA",
+                                        "state": "MG"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Todas as propriedades são obrigatórias / O tamanho das áreas vegetáveis e de agricultura não podem ser maiores que a área total"
+                    },
+                    "201": {
+                        "description": "Id do produtor rural"
+                    }
+                }
+            },
+            "get": {
+                "sumary": "Visualizar produtores rurais",
+                "description": "Essa rota é responsável por retornar os produtores rurais",
+                "tags": [
+                    "Produtores rurais"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "quantidade de usuários retornados",
+                        "required": true
+                    },
+                    {
+                        "name": "cpf_cnpj",
+                        "in": "query",
+                        "description": "Cpf ou cnpj como parâmetro para busca de usuário específico",
+                        "required": false
+                    },
+                    {
+                        "name": "E-mail",
+                        "in": "query",
+                        "description": "E-mail como parâmetro para busca de usuário específico",
+                        "required": false
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/farm_producer/{id}": {
+            "delete": {
+                "sumary": "Deletar produtores rurais",
+                "description": "Essa rota é responsável por deletar um produtor rural pelo Id",
+                "tags": [
+                    "Produtores rurais"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do produtor rural",
+                        "required": true
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "500": {
+                        "description": "Id inválido"
+                    },
+                    "200": {
+                        "description": 1
+                    }
+                }
+            },
+            "put": {
+                "sumary": "Editar produtor rural",
+                "description": "Essa rota é responsável por editar um produtor rural pelo Id",
+                "tags": [
+                    "Produtores rurais"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do produtor rural",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Farm_producer"
+                            },
+                            "examples": {
+                                "Farm_producer": {
+                                    "value": {
+                                        "cpf_cnpj": "*********-**",
+                                        "name": "Teste",
+                                        "password": "123456",
+                                        "last_name": "UPDATE",
+                                        "city": "ITABIRA",
+                                        "state": "MG"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "400": {
+                        "description": "Id inválido"
+                    },
+                    "200": {
+                        "description": 1
+                    }
+                }
+            }
+        },
+        "/farm": {
+            "post": {
+                "sumary": "Cadastro de fazenda",
+                "description": "Essa rota é responsável por cadastro de fazenda por produtor rural",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Farm"
+                            },
+                            "examples": {
+                                "Farm": {
+                                    "value": {
+                                        "id_farm_producer": "0d2e74d1-9d56-4d76-a73b-f133df4337ea",
+                                        "name": "IX",
+                                        "city": "Goiania",
+                                        "state": "GO",
+                                        "total_acres": 35000,
+                                        "vegetable_acres": 1500,
+                                        "agriculture_acres": 9000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Nome é obrigatório / Cpf/Cnpj inválido / Cpf/Cnpj já existente / A senha deve possuir mais de 6 caracteres / Nome é obrigatório"
+                    },
+                    "400": {
+                        "description": "Tipo de usuário inválido"
+                    },
+                    "201": {
+                        "description": "Id do usuário"
+                    }
+                }
+            },
+            "get": {
+                "sumary": "Visualizar fazendas",
+                "description": "Essa rota é responsável por retornar as fazendas",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "quantidade de fazendas retornados",
+                        "required": true
+                    },
+                    {
+                        "name": "id_farm_producer",
+                        "in": "query",
+                        "description": "Id do produtor rural como parâmetro para busca de usuário específico",
+                        "required": false
+                    },
+                    {
+                        "name": "city",
+                        "in": "query",
+                        "description": "Cidade como parâmetro para busca de usuário específico",
+                        "required": false
+                    },
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "description": "Estado como parâmetro para busca de usuário específico",
+                        "required": false
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/Farm"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/farm/{id}": {
+            "delete": {
+                "sumary": "Deletar fazendas",
+                "description": "Essa rota é responsável por deletar uma fazenda Id",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id da fazenda",
+                        "required": true
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "500": {
+                        "description": "Id inválido"
+                    },
+                    "200": {
+                        "description": 1
+                    }
+                }
+            },
+            "put": {
+                "sumary": "Editar fazenda",
+                "description": "Essa rota é responsável por editar um fazenda pelo Id",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id da fazenda",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Farm"
+                            },
+                            "examples": {
+                                "Farm": {
+                                    "value": {
+                                        "id_farm_producer": "0d2e74d1-9d56-4d76-a73b-f133df4337ea",
+                                        "name": "IX",
+                                        "city": "Goiania",
+                                        "state": "GO",
+                                        "total_acres": 40000,
+                                        "vegetable_acres": 1500,
+                                        "agriculture_acres": 9000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "400": {
+                        "description": "Id inválido"
+                    },
+                    "200": {
+                        "description": 1
+                    }
+                }
+            }
+        },
+        "/total/acres/farm": {
+            "get": {
+                "sumary": "Visualizar total de hectares das fazendas",
+                "description": "Essa rota é responsável por retornar os hectares totais de todas as fazendas",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "total_of_acres_farm": {
+                                            "type": "double"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/total/farm": {
+            "get": {
+                "sumary": "Visualizar quantidade de fazendas",
+                "description": "Essa rota é responsável por retornar a quantidade de fazendas",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "total_of_farm": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pizza/culture/farm": {
+            "get": {
+                "sumary": "Gráfico de pizza por cultura",
+                "description": "Dados para gráfico pizza de cultura",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "name":{
+                                            "type": "string"
+                                        }, 
+                                        "sum":{
+                                            "type":"float"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pizza/state/farm": {
+            "get": {
+                "sumary": "Gráfico de pizza por estado",
+                "description": "Dados para gráfico pizza de estado",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "state":{
+                                            "type": "string"
+                                        } 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pizza/soil/farm": {
+            "get": {
+                "sumary": "Gráfico de pizza por solo",
+                "description": "Dados para gráfico pizza de solo",
+                "tags": [
+                    "Fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "total_vegetable": {
+                                            "type": "double"
+                                        },
+                                        "total_agriculture":{
+                                            "type": "double"
+                                        } 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/culture_of_farm": {
+            "post": {
+                "sumary": "Cadastro de cultura de uma fazenda",
+                "description": "Essa rota é responsável por cadastro de uma cultura para uma fazenda",
+                "tags": [
+                    "Cultura de fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Culture_of_farm"
+                            },
+                            "examples": {
+                                "Culture_of_farm": {
+                                    "value": {
+                                        "id_farm": "fd1cb39c-a441-45ff-9c66-c17ad4817f96",
+                                        "id_culture": "6d7c298d-d71e-4678-a51b-c6c90da7d8c0",
+                                        "acres_farm": 7000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Cultura já inserida nesta fazenda / Quantidade de hectares restantes da fazenda não corresponde com a nova cultura / Todas as propriedades são obrigatórias"
+                    },
+                    "201": {
+                        "description": "Id da cultura cadastrada"
+                    }
+                }
+            },
+            "get": {
+                "sumary": "Visualizar culturas de fazendas",
+                "description": "Essa rota é responsável por retornar culturas de fazendas",
+                "tags": [
+                    "Cultura de fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "quantidade de fazendas retornados",
+                        "required": true
+                    },
+                    {
+                        "name": "id_farm",
+                        "in": "query",
+                        "description": "Id da fazenda como parâmetro para busca de usuário específico",
+                        "required": false
+                    },
+                    {
+                        "name": "id_culture",
+                        "in": "query",
+                        "description": "Id da cultura como parâmetro para busca de usuário específico",
+                        "required": false
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/Culture_of_farm"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/culture_of_farm/{id}": {
+            "delete": {
+                "sumary": "Deletar cultura de uma fazenda",
+                "description": "Essa rota é responsável por deletar uma cultura de fazenda pelo Id",
+                "tags": [
+                    "Cultura de fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id da fazenda",
+                        "required": true
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "500": {
+                        "description": "Id inválido"
+                    },
+                    "200": {
+                        "description": 1
+                    }
+                }
+            },
+            "put": {
+                "sumary": "Editar cultura de fazendas fazenda",
+                "description": "Essa rota é responsável por editar uma cultura de fazenda pelo Id",
+                "tags": [
+                    "Cultura de fazendas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id da fazenda",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Farm"
+                            },
+                            "examples": {
+                                "Culture_of_farm": {
+                                    "value": {
+                                        "id_farm": "fd1cb39c-a441-45ff-9c66-c17ad4817f96",
+                                        "id_culture": "6d7c298d-d71e-4678-a51b-c6c90da7d8c0",
+                                        "acres_farm": 8000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "400": {
+                        "description": "Id inválido"
+                    },
+                    "200": {
+                        "description": 1
+                    }
+                }
+            }
+        },
+        "/culture": {
+            "get": {
+                "sumary": "Visualizar culturas",
+                "description": "Essa rota é responsável por retornar culturas",
+                "tags": [
+                    "Culturas"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "quantidade de fazendas retornados",
+                        "required": true
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome da cultura como parâmetro para busca de usuário específico",
+                        "required": false
+                    }
+                ],
+                "requestBody": {},
+                "responses": {
+                    "401": {
+                        "description": "No token provided"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "$ref": "#/components/schemas/Culture"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserLogged": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "last_name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Farm_producer": {
+                "type": "object",
+                "properties": {
+                    "cpf_cnpj": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Farm": {
+                "type": "object",
+                "properties": {
+                    "id_farm_producer": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "total_acres": {
+                        "type": "double"
+                    },
+                    "vegetable_acres": {
+                        "type": "double"
+                    },
+                    "agriculture_acres": {
+                        "type": "double"
+                    }
+                }
+            },
+            "Culture_of_Farm": {
+                "type": "object",
+                "properties": {
+                    "id_farm": {
+                        "type": "string"
+                    },
+                    "id_culture": {
+                        "type": "string"
+                    },
+                    "acres_farm": {
+                        "type": "double"
+                    }
+                }
+            },
+            "Culture": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

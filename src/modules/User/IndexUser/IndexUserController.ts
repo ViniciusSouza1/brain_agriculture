@@ -13,14 +13,16 @@ class IndexUserController {
             const {
                 username,
                 email,
-                phone,
+                name,
+                last_name,
                 page
             } = <any> req.query;
 
             const userLogged = <any> await this.IndexUser.execute({
                 username,
                 email,
-                phone,
+                name,
+                last_name,
                 page
             });
 

@@ -118,7 +118,6 @@ class KnexFarmRepository implements IFarmRepository {
     }
 
     verifyFarmSize(total_acres: number, agriculture_acres: number, vegetable_acres: number): boolean {
-        console.log(agriculture_acres + vegetable_acres)
         if (total_acres >= agriculture_acres + vegetable_acres) {
             return true;
         } else {

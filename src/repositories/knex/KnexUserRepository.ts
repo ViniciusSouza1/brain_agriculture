@@ -96,6 +96,14 @@ class KnexUserRepository implements IUserRepository {
             query
                 .where(knex.raw('username::text'), 'like', `%${data.username}%`)
         }
+        if (data.name) {
+            query
+                .where(knex.raw('name::text'), 'like', `%${data.name}%`)
+        }
+        if (data.last_name) {
+            query
+                .where(knex.raw('last_name::text'), 'like', `%${data.last_name}%`)
+        }
 
         const response = await query;
 

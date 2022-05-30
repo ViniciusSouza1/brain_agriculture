@@ -4,6 +4,10 @@ import { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import routes from './routes';
 import { errors } from 'celebrate';
+import swaggerUi from 'swagger-ui-express';
+
+import swaggerDocs from "./swagger.json";
+
 const app = express();
 
 const corsOptions = {
@@ -13,6 +17,8 @@ const corsOptions = {
 
 app.use(express.json());
 app.use(cors());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use(routes);
 

@@ -13,14 +13,12 @@ class IndexFarm_producerController {
             const {
                 cpf_cnpj,
                 email,
-                phone,
                 page
             } = <any> req.query;
 
             const farm_producer = <any> await this.IndexFarm_producer.execute({
                 cpf_cnpj,
                 email,
-                phone,
                 page
             });
 
