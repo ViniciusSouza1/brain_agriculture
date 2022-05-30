@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  SyntaxError: C:\Users\Administrator\Documents\SAFRABACKEND\package.json: Unexpected token } in JSON at position 432
+  SyntaxError: C:\Users\Administrator\Documents\brain_agriculture\package.json: Unexpected token } in JSON at position 432
       at JSON.parse (<anonymous>)
       at C:\Program Files (x86)\Yarn\lib\cli.js:1625:59
       at Generator.next (<anonymous>)
@@ -23,7 +23,7 @@ Trace:
 
 npm manifest: 
   {
-    "name": "SAFRABACKEND",
+    "name": "brain_agriculture",
     "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",
