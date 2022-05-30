@@ -1,7 +1,7 @@
 require('dotenv').config
 
 import { User_logged } from "../../../entities/User_logged";
-import { IUserRepository } from "../../../repositories/IUserRepository";
+import { IAuthRepository } from "../../../repositories/IAuthRepository";
 
 
 export interface ILoginRequest {
@@ -12,7 +12,7 @@ export interface ILoginRequest {
 class LoginService {
 
     constructor(
-        private userRepository: IUserRepository
+        private authRepository: IAuthRepository
     ) { }
 
     async execute(data: ILoginRequest) {
@@ -21,24 +21,24 @@ class LoginService {
             throw new Error('Usuário ou senha inválidos')
         }
 
-        const space_between_username = this.userRepository.hasWhiteSpace(data.username);
+        const space_between_username = this.authRepository.hasWhiteSpace(data.username);
 
         if (space_between_username) {
             throw new Error('username não pode possuir espaços em branco')
         }
 
-        const user = await this.userRepository.findByusername(data.username);
+        const user = await this.authRepository.findByusername(data.username);
 
         if (!user) {
             throw new Error('Usuário inexistente')
         }
 
-        const compare = await this.userRepository.comparePassword(user, data.password);
+        const compare = await this.authRepository.comparePassword(user, data.password);
        
         if (!compare) {
             throw new Error('Senha incorreta.')
         }
-        const token = await this.userRepository.generateToken(user.id);
+        const token = await this.authRepository.generateToken(user.id);
 
         if (!token) {
             throw new Error('Erro na criação do token')

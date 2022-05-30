@@ -5,6 +5,7 @@ import Crypto from "../../util/crypto";
 import { errors } from "celebrate";
 import jwt from 'jsonwebtoken';
 import { Farm } from "../../entities/Farm";
+import { User } from "../../entities/User";
 
 const { promisify } = require('util');
 
@@ -26,6 +27,23 @@ class KnexAuthRepository implements IAuthRepository {
         return (username.indexOf(' ') >= 0);
     }
 
+    async findByusername(username: string): Promise<User> {
+
+        let user = await knex('user')
+            .where({ username })
+            .first()
+
+        if (!user) {
+            const farm_producer = await knex('farm_producer')
+                .where('cpf_cnpj', '=', username)
+                .first()
+
+            return farm_producer;
+        } else {
+            return user;
+        }
+
+    }
 
     async comparePassword(user: any, password: string) {
         const returned = await crypt.compare(password, user.password).then((result) => {

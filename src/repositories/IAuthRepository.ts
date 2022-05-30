@@ -7,4 +7,5 @@ export interface IAuthRepository {
     decode(token: string): Promise<string>
     decodeTokenReturnAuthId(req: string): Promise<string>
     encryptedPassword(password: string): Promise<string>
+    findByusername(username: string): Promise<User>
 }
