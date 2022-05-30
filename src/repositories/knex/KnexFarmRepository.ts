@@ -156,15 +156,26 @@ class KnexFarmRepository implements IFarmRepository {
         return count;
     }
 
-    async pizzaPerCultureFarm(): Promise<{ count: number; culture: string; }[]> {
+    async pizzaPerCultureFarm(): Promise<{ count: number; sum: number, name: string; }[]> {
 
         const count = await knex('farm')
             .join('culture_of_farm', 'culture_of_farm.id_farm', 'farm.id')
+            .join('culture', 'culture.id', 'culture_of_farm.id_culture')
+            .sum({culture_acres:'culture_of_farm.acres_farm'})
             .count()
-            .groupBy('culture_of_farm.id_culture')
+            .groupBy('culture_of_farm.id_culture', 'culture.name')
+            .select('culture.name')
 
-            return count;
+        return count;
 
+    }
+
+    async pizzaPerSoilUsage(): Promise<{ total_vegetable: number; total_agriculture: number; }[]> {
+
+        const count = await knex('farm')
+            .sum({ total_vegetable: 'vegetable_acres', total_agriculture: 'agriculture_acres' })
+
+        return count;
     }
 
 

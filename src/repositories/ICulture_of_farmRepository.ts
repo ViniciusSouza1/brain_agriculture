@@ -10,4 +10,5 @@ export interface ICulture_of_farmRepository {
     updateCulture_of_farm(data: IUpdateCulture_of_farmRequest): Promise<number>,
     verifyAllProperties(data: Culture_of_farm): boolean
     verifyCulture_of_farmSize(data: ICreateCulture_of_farmRequest): Promise<void>
+    verifyCulture_of_farmSizeToUpdate(data: IUpdateCulture_of_farmRequest): Promise<void>
 }

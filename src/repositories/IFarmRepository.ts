@@ -10,8 +10,9 @@ export interface IFarmRepository {
     updateFarm(data: IUpdateFarmRequest): Promise<number>,
     verifyAllProperties(data: Farm): boolean
     verifyFarmSize(total_acres: number, agriculture_acres: number, vegetable_acres: number): boolean
-    totalOfFarm(): Promise<{total_of_farm: number}>
-    totalOfAcresFarm(): Promise<{total_of_acres_farm: number}>
-    pizzaPerStateFarm(): Promise<{count: number, state: string}[]>
-    pizzaPerCultureFarm(): Promise<{count: number, culture: string}[]>
+    totalOfFarm(): Promise<{ total_of_farm: number }>
+    totalOfAcresFarm(): Promise<{ total_of_acres_farm: number }>
+    pizzaPerStateFarm(): Promise<{ count: number, state: string }[]>
+    pizzaPerCultureFarm(): Promise<{ count: number, sum: number, name: string }[]>
+    pizzaPerSoilUsage(): Promise<{ total_vegetable: number; total_agriculture: number; }[]>
 }

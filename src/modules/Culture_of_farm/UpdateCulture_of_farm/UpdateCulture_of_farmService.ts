@@ -21,7 +21,7 @@ class UpdateCulture_of_farmService {
             throw new Error('Todas as propriedades são obrigatórias')
         }
 
-        await this.culture_of_farmRepository.verifyCulture_of_farmSize(data);
+        await this.culture_of_farmRepository.verifyCulture_of_farmSizeToUpdate(data);
 
 
         const updatedCulture_of_farm = await this.culture_of_farmRepository.updateCulture_of_farm(data);

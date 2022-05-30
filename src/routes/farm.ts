@@ -3,6 +3,7 @@ import { CreateFarmFactory} from "../modules/Farm/CreateFarm/CreateFarmFactory";
 import { deleteFarmFactory } from "../modules/Farm/DeleteFarm/DeleteFarmFactory";
 import { IndexFarmFactory } from "../modules/Farm/IndexFarm/IndexFarmFactory";
 import { PizzaPerCultureFarmFactory } from "../modules/Farm/PizzaPerCultureFarm/PizzaPerCultureFarmFactory";
+import { PizzaPerSoilUsageFactory } from "../modules/Farm/PizzaPerSoilUsage/PizzaPerSoilUsageFactory";
 import { PizzaPerStateFarmFactory } from "../modules/Farm/PizzaPerStateFarm/PizzaPerStateFarmFactory";
 import { TotalOfAcresFarmFactory } from "../modules/Farm/TotalOfAcresFarm/TotalOfAcresFarmFactory";
 import { TotalOfFarmFactory } from "../modules/Farm/TotalOfFarm/TotalOfFarmFactory";
@@ -45,6 +46,10 @@ PizzaPerStateFarmFactory().handle(request, response, next)
 
 routes.get('/pizza/culture/farm', auth, (request, response, next) =>
 PizzaPerCultureFarmFactory().handle(request, response, next)
+);
+
+routes.get('/pizza/soil/farm', auth, (request, response, next) =>
+PizzaPerSoilUsageFactory().handle(request, response, next)
 );
 
 

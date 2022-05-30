@@ -42,7 +42,7 @@ class KnexCulture_of_farmRepository implements ICulture_of_farmRepository {
 
     async delete(id: string): Promise<number> {
 
-        const response = await knex('farm')
+        const response = await knex('culture_of_farm')
             .where({ id })
             .delete()
 
@@ -50,13 +50,6 @@ class KnexCulture_of_farmRepository implements ICulture_of_farmRepository {
     }
 
     async updateCulture_of_farm(data: IUpdateCulture_of_farmRequest): Promise<number> {
-
-        // if (data.total_acres || data.agriculture_acres || data.vegetable_acres) {
-        //     if(!this.verifyCulture_of_farmSize(data.total_acres, data.agriculture_acres, data.vegetable_acres)){
-        //         throw new Error('Ta')
-        //     }
-
-        // }
 
         const query = knex('farm')
             .where('id', '=', data.id)
@@ -103,7 +96,26 @@ class KnexCulture_of_farmRepository implements ICulture_of_farmRepository {
             .where('id_farm', '=', data.id_farm)
             .sum('acres_farm')
 
-        if (result[0].agriculture_acres < culture_of_farm[0].sum + data.acres_farm) throw new Error('Quantidade de hectares restantes da fazenda não corresponde com a nova cultura')
+        if (parseFloat(result[0].agriculture_acres) < parseFloat(culture_of_farm[0].sum) + data.acres_farm) throw new Error('Quantidade de hectares restantes da fazenda não corresponde com a nova cultura')
+
+    }
+
+    async verifyCulture_of_farmSizeToUpdate(data: IUpdateCulture_of_farmRequest): Promise<void> {
+
+        const culture = await knex('culture_of_farm')
+            .where('id', '=', data.id)
+
+        const new_size = data.acres_farm - parseFloat(culture[0].acres_farm) 
+
+        const result = await knex('farm')
+            .where('id', '=', data.id_farm)
+            .select('agriculture_acres')
+
+        const culture_of_farm = await knex('culture_of_farm')
+            .where('id_farm', '=', data.id_farm)
+            .sum('acres_farm')
+
+        if (parseFloat(result[0].agriculture_acres) < parseFloat(culture_of_farm[0].sum) + new_size) throw new Error('Quantidade de hectares restantes da fazenda não corresponde com a nova cultura')
 
     }
 
