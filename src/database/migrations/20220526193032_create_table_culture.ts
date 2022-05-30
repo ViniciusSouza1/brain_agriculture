@@ -10,14 +10,14 @@ export async function up(knex: Knex): Promise<void> {
 
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.timestamp('updated_at').defaultTo(knex.fn.now());
-    
+
     }).then(() => knex.raw(onUpdateTrigger('culture'))).then(
-        function () {
-            knex('culture').insert({ name: "Soja" })
-            knex('culture').insert({ name: "Milho" })
-            knex('culture').insert({ name: "Algodão" })
-            knex('culture').insert({ name: "Café" })
-            knex('culture').insert({ name: "Cana de açucar" })
+        async function () {
+            await knex('culture').insert({ name: "Soja" })
+            await knex('culture').insert({ name: "Milho" })
+            await knex('culture').insert({ name: "Algodão" })
+            await knex('culture').insert({ name: "Café" })
+            await knex('culture').insert({ name: "Cana de açucar" })
         })
 }
 

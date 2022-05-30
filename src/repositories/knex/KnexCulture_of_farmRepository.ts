@@ -22,27 +22,17 @@ class KnexCulture_of_farmRepository implements ICulture_of_farmRepository {
 
     async search(data: IIndexCulture_of_farmRequest): Promise<Culture_of_farm[]> {
 
-        const query = knex('farm')
+        const query = knex('culture_of_farm')
             .limit(10)
             .offset((<number>data.page - 1) * 10)
 
-        if (data.id_farm_producer) {
+        if (data.id_farm) {
             query
-                .where('id_farm_producer', '=', data.id_farm_producer)
+                .where('id_farm', '=', data.id_farm)
         }
-        if (data.name) {
+        if (data.id_culture) {
             query
-                .where(knex.raw('name::text'), 'like', `%${data.name}%`)
-        }
-
-        if (data.city) {
-            query
-                .where(knex.raw('city::text'), 'like', `%${data.city}%`)
-        }
-
-        if (data.state) {
-            query
-                .where(knex.raw('state::text'), 'like', `%${data.state}%`)
+                .where('id_culture', '=', data.id_culture)
         }
 
         const response = await query;

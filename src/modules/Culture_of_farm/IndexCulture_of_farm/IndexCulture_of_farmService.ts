@@ -4,11 +4,9 @@ import { ICulture_of_farmRepository } from "../../../repositories/ICulture_of_fa
 
 
 export interface IIndexCulture_of_farmRequest {
-    id_farm_producer?: string
-    name?: string;
-    city?: string;
-    state?: string;
-    page?: number;
+    page: number;
+    id_farm?: string;
+    id_culture?: string;
 }
 
 class IndexCulture_of_farmService {

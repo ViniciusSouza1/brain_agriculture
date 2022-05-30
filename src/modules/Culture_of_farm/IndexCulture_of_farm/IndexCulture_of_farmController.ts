@@ -11,17 +11,15 @@ class IndexCulture_of_farmController {
         try {
 
             const {
-                id_farm_producer,
-                name,
-                city,
-                state
+                page,
+                id_farm,
+                id_culture
             } = <any>req.query;
 
             const farm = <any>await this.IndexCulture_of_farm.execute({
-                id_farm_producer,
-                name,
-                city,
-                state
+                page,
+                id_farm,
+                id_culture
             });
 
             return res.status(200).json(farm);
