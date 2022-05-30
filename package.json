@@ -18,7 +18,8 @@
     "knex": "^1.0.4",
     "pg": "^8.7.3",
     "supertest": "^6.2.3",
-    "swagger-ui-express": "^4.4.0"
+    "swagger-ui-express": "^4.4.0",
+    "ts-node": "^10.8.0"
   },
   "scripts": {
     "dev": "ts-node-dev --transpile-only --respawn --ignore-watch node_modules src/server.ts",
